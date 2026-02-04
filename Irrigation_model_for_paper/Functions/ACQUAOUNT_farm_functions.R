@@ -492,82 +492,103 @@ ws_coeff <- function(TAW, Dr, a, RAW) {
 kc_corr_function <- function(a, kc_corr, kc_correction, irr_given_vol, moisture_LOW, 
                              duration_past, moisture_sensor, sensor_levels) {
   
-  # --------------------------------------------------------------------------
-  # Find natural fluctuations in moisture far from irrigation events
-  # --------------------------------------------------------------------------
   
-  irrigation_past <- irr_given_vol[1:duration_past]
+  #=======================================================================================================
+  ####### find natural fluctuations (standard deviation) of moisture_LOW levels far from irrigation events ===========================================================================
   
-  x_prev <- NULL
-  for (pos in 1:duration_past) {
-    if (pos > 24 && sum(irrigation_past[(pos - 24):pos]) == 0) {
-      x <- c((pos - 4):(pos - 1), x_prev)
+  irrigation_past<-irr_given_vol[1:duration_past]
+  
+  #Find all the time steps far from irrigation event 
+  x_prev<-NULL
+  for(pos in 1:duration_past){
+    if (pos > 24 && sum(irrigation_past[(pos-24):pos]) == 0) {     # if there is no irrigation in the 24 h before position x, then pick up the 5 last 5 values
+      x <- c((pos - 4):(pos-1),x_prev)
     } else {
-      x <- x_prev
+      x <-x_prev
     }
-    x_prev <- x
+    x_prev<-x
   }
-  x <- sort(unique(x))
+  x<-sort(unique(x))
   
-  if (length(x) < 10) {
-    sd_base <- sd(moisture_LOW[irrigation_past == 0], na.rm = TRUE)
-  } else {
-    sd_base <- sd(moisture_LOW[x])
+  if(length(x)<10){
+    
+    #cat("Irrigation events are happening for most (or all) the time period, so it's not possible to detect fluctuations of moisture_LOW levels")
+    sd_base=sd(moisture_LOW[irrigation_past==0],na.rm = TRUE)
+    
+  }else{
+    
+    sd_base=sd(moisture_LOW[x]) 
+    
   }
   
   
-  # --------------------------------------------------------------------------
-  # Assess Kc correction
-  # --------------------------------------------------------------------------
   
-  if (a <= duration_past) {
+  #==================================================================================================================
+  # Perform the assessment of kc correction
+  
+  if( a <= duration_past ){
     
-    kc_correction <- kc_corr
+    kc_correction=kc_corr
     
-  } else if (a == (duration_past + 1)) {
+  } else if ( a == (duration_past+1) ) {
     
-    if (sum(irrigation_past[c(duration_past - 24):duration_past]) > 0) {
+    if(sum(irrigation_past[c(duration_past-24):duration_past])>0){ # if there is irrigation in the last 24 hours
       
-      # Find irrigation positions in last 24 hours
-      irr_pos <- which(irrigation_past > 0)
-      irr_pos <- min(irr_pos[irr_pos >= (duration_past - 24)])
+      # Find positions of irrigation in the 24h before present
+      irr_pos <- which(irrigation_past>0)
+      irr_pos<- min(irr_pos[irr_pos>=(duration_past-24)])
+      irr_last <- max(irr_pos[irr_pos>=(duration_past-24)])  # ULTIMO istante irrigato nelle ultime 24h
       
-      a0 <- ifelse((a - 24) < irr_pos, irr_pos, a - 24)
+      a0=ifelse((a-24) < irr_pos, irr_pos,a-24) #if in the instant "a" irrigation happened less than 24 hours before, then take the irrigation position
       
-      # Ratio of standard deviations
-      ratio_sd <- sd(moisture_LOW[a0:a]) / sd_base
-      ratio_sd <- ifelse(is.na(ratio_sd), 0, ratio_sd)
+      # --- finestre brevi post-irrigazione ---
+      Aend_low  <- min(irr_last + 5, duration_past)  # 5 ore per check irrigazione "bassa"
+      Aend_perc <- min(irr_last + 7, duration_past)  # 7 ore per segnale percolazione (puoi mettere 10-12 se serve)
       
-      # Detect percolation
-      if (ratio_sd > 2) {
-        kc_correction <- kc_corr * 0.9
-      } else {
-        kc_correction <- kc_corr
+      #do the ratio between the standard deviation of moisture_LOW of the last 24 hours over the base one (with natual fluctuations)
+      ratio_sd=sd(moisture_LOW[a0:a])/sd_base
+      ratio_sd=ifelse(is.na(ratio_sd),0,ratio_sd)
+      
+      #do the ratio between the standard deviation of moisture_LOW of a short window after irrigation over the base one
+      ratio_sd=sd(moisture_LOW[irr_last:Aend_perc], na.rm=TRUE)/sd_base
+      ratio_sd=ifelse(is.na(ratio_sd) | is.infinite(ratio_sd),0,ratio_sd)
+      
+      ## If there is percolation
+      if(ratio_sd>2){ 
+        kc_correction=kc_corr*0.9
+      } else{ ## No percolation
+        kc_correction=kc_corr
       }
       
-      # Check for water stress
-      if (mean(as.matrix(moisture_sensor[(a - 24):a, c(1:(sensor_levels - 1))])) < (0.7 * theta_fc)) {
-        kc_correction <- kc_corr * 1.1
-      } else {
-        kc_correction <- kc_corr
+      # check "low irrigation" subito dopo l'ultima irrigazione (finestra breve, non 24h)
+      # (uso MAX perché più realistico: se l'acqua arriva, almeno un picco lo vedi)
+      val_post <- max(as.matrix(moisture_sensor[irr_last:Aend_low, c(1:(sensor_levels-1))]), na.rm=TRUE)
+      
+      if(val_post < (0.7*theta_fc) ){
+        kc_correction=kc_correction*1.1   # nota: moltiplico sulla correzione già fatta (non la resetto)
       }
       
-    } else {
-      kc_correction <- kc_corr
+    }else{
+      kc_correction=kc_corr
     }
     
-    # Limit correction factor range
-    if (kc_correction < 0.5) {
-      kc_correction <- 0.5
-    } else if (kc_correction > 1.5) {
-      kc_correction <- 1.5
+    # Check that kc_correction doesn't diverge too much (or too big or too low)
+    if(kc_correction<(0.5)){
+      kc_correction=0.5
+    } else if(kc_correction>(1.5)){
+      kc_correction=1.5
+    }else{
+      kc_correction = kc_correction
     }
     
-  } else if (a > (duration_past + 1)) {
-    kc_correction <- kc_correction
+  } else if ( a > (duration_past+1)){
+    kc_correction = kc_correction
   }
+  
+  
   
   return(kc_correction)
+  
 }
 
 
