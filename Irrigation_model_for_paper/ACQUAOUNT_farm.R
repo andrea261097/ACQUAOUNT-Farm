@@ -31,7 +31,7 @@ library(jsonlite)
 # ==============================================================================
 # SETUP DIRECTORIES AND CONFIGURATION
 # ==============================================================================
-wd <- setwd("C:/Users/PC/OneDrive - Università degli Studi di Sassari/Desktop/Dottorato_Sassari/modello_ACQUAOUNT/Articolo modello farm/Irrigation_model_for_paper/")
+wd <- setwd("SET WORKING DIRECTORY")
 #wd <- getwd()
 in_dir <- paste0(wd, "/Input_data/")
 out_dir <- paste0(wd, "/Output_data/")
