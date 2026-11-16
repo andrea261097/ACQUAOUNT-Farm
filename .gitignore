@@ -3,3 +3,7 @@
 .Rproj.user/
 *.Rproj
 .DS_Store
+_tmp_replay/
+examples/*/Output_data_new/
+Irrigation_model_for_paper/Output_data/
+node_modules/

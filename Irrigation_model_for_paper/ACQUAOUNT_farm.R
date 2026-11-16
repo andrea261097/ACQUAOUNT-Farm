@@ -40,6 +40,7 @@ if (!file.exists(file.path(wd, "config.input.json"))) {
 }
 in_dir <- paste0(wd, "/Input_data/")
 out_dir <- paste0(wd, "/Output_data/")
+dir.create(out_dir, showWarnings = FALSE)
 json_data <- fromJSON(paste0(wd, "/config.input.json"))
 
 source(paste0(wd, "/Functions/ACQUAOUNT_farm_functions.R"))

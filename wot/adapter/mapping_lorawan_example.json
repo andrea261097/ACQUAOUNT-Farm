@@ -1,0 +1,10 @@
+{
+  "_comment": "Maps the fields of a (decoded) LoRaWAN uplink to the Properties of the field Thing Description. value_out = value_in * scale + offset. Paths use dots.",
+  "timestamp": "time",
+  "properties": {
+    "soilMoisture15cm": { "source": "object.sm_15", "scale": 100, "offset": 0 },
+    "soilMoisture30cm": { "source": "object.sm_30", "scale": 100, "offset": 0 },
+    "soilMoisture45cm": { "source": "object.sm_45", "scale": 100, "offset": 0 },
+    "irrigationVolume": { "source": "object.water_litres", "scale": 0.001, "offset": 0 }
+  }
+}

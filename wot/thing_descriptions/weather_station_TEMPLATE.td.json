@@ -1,0 +1,184 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    {
+      "htv": "http://www.w3.org/2011/http#"
+    }
+  ],
+  "id": "urn:dev:ops:acquaount:weather-station:STATION_ID",
+  "title": "ACQUAOUNT weather station STATION_ID",
+  "description": "TEMPLATE. One Thing Description per weather station: the five hourly variables required by the model. Replace STATION_ID and the host name before use.",
+  "securityDefinitions": {
+    "bearer_sc": {
+      "scheme": "bearer"
+    }
+  },
+  "security": [
+    "bearer_sc"
+  ],
+  "properties": {
+    "airTemperature": {
+      "title": "Air temperature",
+      "description": "Hourly mean",
+      "unit": "degC",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "type": "number",
+          "minimum": -50,
+          "maximum": 60
+        }
+      },
+      "required": [
+        "timestamp",
+        "value"
+      ],
+      "forms": [
+        {
+          "href": "https://HOST/things/STATION_ID/properties/airTemperature",
+          "op": "readproperty",
+          "htv:methodName": "GET"
+        },
+        {
+          "href": "https://HOST/things/STATION_ID/properties/airTemperature",
+          "op": "writeproperty",
+          "htv:methodName": "POST"
+        }
+      ]
+    },
+    "precipitation": {
+      "title": "Precipitation",
+      "description": "Hourly total",
+      "unit": "mm",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "timestamp",
+        "value"
+      ],
+      "forms": [
+        {
+          "href": "https://HOST/things/STATION_ID/properties/precipitation",
+          "op": "readproperty",
+          "htv:methodName": "GET"
+        },
+        {
+          "href": "https://HOST/things/STATION_ID/properties/precipitation",
+          "op": "writeproperty",
+          "htv:methodName": "POST"
+        }
+      ]
+    },
+    "solarRadiation": {
+      "title": "Solar radiation",
+      "description": "Hourly mean global (shortwave) radiation",
+      "unit": "W m-2",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1500
+        }
+      },
+      "required": [
+        "timestamp",
+        "value"
+      ],
+      "forms": [
+        {
+          "href": "https://HOST/things/STATION_ID/properties/solarRadiation",
+          "op": "readproperty",
+          "htv:methodName": "GET"
+        },
+        {
+          "href": "https://HOST/things/STATION_ID/properties/solarRadiation",
+          "op": "writeproperty",
+          "htv:methodName": "POST"
+        }
+      ]
+    },
+    "relativeHumidity": {
+      "title": "Relative humidity",
+      "description": "Hourly mean",
+      "unit": "%",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "timestamp",
+        "value"
+      ],
+      "forms": [
+        {
+          "href": "https://HOST/things/STATION_ID/properties/relativeHumidity",
+          "op": "readproperty",
+          "htv:methodName": "GET"
+        },
+        {
+          "href": "https://HOST/things/STATION_ID/properties/relativeHumidity",
+          "op": "writeproperty",
+          "htv:methodName": "POST"
+        }
+      ]
+    },
+    "windSpeed": {
+      "title": "Wind speed",
+      "description": "Hourly mean",
+      "unit": "m s-1",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "timestamp",
+        "value"
+      ],
+      "forms": [
+        {
+          "href": "https://HOST/things/STATION_ID/properties/windSpeed",
+          "op": "readproperty",
+          "htv:methodName": "GET"
+        },
+        {
+          "href": "https://HOST/things/STATION_ID/properties/windSpeed",
+          "op": "writeproperty",
+          "htv:methodName": "POST"
+        }
+      ]
+    }
+  }
+}

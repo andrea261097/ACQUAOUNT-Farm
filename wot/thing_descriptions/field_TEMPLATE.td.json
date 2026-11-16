@@ -1,0 +1,73 @@
+{
+  "@context": [
+    "https://www.w3.org/2022/wot/td/v1.1",
+    { "htv": "http://www.w3.org/2011/http#" }
+  ],
+  "id": "urn:dev:ops:acquaount:field:FIELD_ID",
+  "title": "ACQUAOUNT field FIELD_ID",
+  "description": "TEMPLATE. One Thing Description per field: soil moisture at 15/30/45 cm and hourly irrigation volume. Replace FIELD_ID and the host name before use.",
+  "securityDefinitions": { "bearer_sc": { "scheme": "bearer" } },
+  "security": ["bearer_sc"],
+  "properties": {
+    "soilMoisture15cm": {
+      "title": "Soil moisture at 15 cm",
+      "description": "Volumetric soil water content, hourly mean",
+      "unit": "%",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "value": { "type": "number", "minimum": 0, "maximum": 100 }
+      },
+      "required": ["timestamp", "value"],
+      "forms": [
+        { "href": "https://HOST/things/FIELD_ID/properties/soilMoisture15cm", "op": "readproperty", "htv:methodName": "GET" },
+        { "href": "https://HOST/things/FIELD_ID/properties/soilMoisture15cm", "op": "writeproperty", "htv:methodName": "POST" }
+      ]
+    },
+    "soilMoisture30cm": {
+      "title": "Soil moisture at 30 cm",
+      "description": "Volumetric soil water content, hourly mean",
+      "unit": "%",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "value": { "type": "number", "minimum": 0, "maximum": 100 }
+      },
+      "required": ["timestamp", "value"],
+      "forms": [
+        { "href": "https://HOST/things/FIELD_ID/properties/soilMoisture30cm", "op": "readproperty", "htv:methodName": "GET" },
+        { "href": "https://HOST/things/FIELD_ID/properties/soilMoisture30cm", "op": "writeproperty", "htv:methodName": "POST" }
+      ]
+    },
+    "soilMoisture45cm": {
+      "title": "Soil moisture at 45 cm",
+      "description": "Volumetric soil water content, hourly mean",
+      "unit": "%",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "value": { "type": "number", "minimum": 0, "maximum": 100 }
+      },
+      "required": ["timestamp", "value"],
+      "forms": [
+        { "href": "https://HOST/things/FIELD_ID/properties/soilMoisture45cm", "op": "readproperty", "htv:methodName": "GET" },
+        { "href": "https://HOST/things/FIELD_ID/properties/soilMoisture45cm", "op": "writeproperty", "htv:methodName": "POST" }
+      ]
+    },
+    "irrigationVolume": {
+      "title": "Irrigation volume",
+      "description": "Water delivered to the field during the hour ending at the timestamp (water meter)",
+      "unit": "m3",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string", "format": "date-time" },
+        "value": { "type": "number", "minimum": 0 }
+      },
+      "required": ["timestamp", "value"],
+      "forms": [
+        { "href": "https://HOST/things/FIELD_ID/properties/irrigationVolume", "op": "readproperty", "htv:methodName": "GET" },
+        { "href": "https://HOST/things/FIELD_ID/properties/irrigationVolume", "op": "writeproperty", "htv:methodName": "POST" }
+      ]
+    }
+  }
+}
