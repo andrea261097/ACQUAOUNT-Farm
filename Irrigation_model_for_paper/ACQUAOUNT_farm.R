@@ -31,13 +31,18 @@ library(jsonlite)
 # ==============================================================================
 # SETUP DIRECTORIES AND CONFIGURATION
 # ==============================================================================
-wd <- setwd("C:/Users/PC/OneDrive - Università degli Studi di Sassari/Desktop/Dottorato_Sassari/modello_ACQUAOUNT/Articolo modello farm/Irrigation_model_for_paper/")
-#wd <- getwd()
+# Run this script from the "Irrigation_model_for_paper" folder
+# (in RStudio: Session > Set Working Directory > To Source File Location)
+wd <- getwd()
+if (!file.exists(file.path(wd, "config.input.json"))) {
+  stop("config.input.json not found in the working directory: ",
+       "set the working directory to the 'Irrigation_model_for_paper' folder.")
+}
 in_dir <- paste0(wd, "/Input_data/")
 out_dir <- paste0(wd, "/Output_data/")
 json_data <- fromJSON(paste0(wd, "/config.input.json"))
 
-source(paste0(wd, "/Functions/ACQUAOUNT_farm_functions.r"))
+source(paste0(wd, "/Functions/ACQUAOUNT_farm_functions.R"))
 
 
 # ==============================================================================
@@ -46,8 +51,8 @@ source(paste0(wd, "/Functions/ACQUAOUNT_farm_functions.r"))
 
 # Import crop table
 crop_table <- read.csv(
-  paste0(in_dir, "crop_data/crop_table.csv"),
-  sep = if (any(grepl(";", readLines(paste0(in_dir, "crop_data/crop_table.csv"))[1]))) ";" else ","
+  paste0(in_dir, "crop_data/crop_table_REVIEWED.csv"),
+  sep = if (any(grepl(";", readLines(paste0(in_dir, "crop_data/crop_table_REVIEWED.csv"))[1]))) ";" else ","
 )
 
 # Crop selection and season dates
@@ -143,7 +148,7 @@ if (irr_method == "sprinkler") {
   n_drip_per_line <- json_data$n_drip_per_line
   d_spacing <- json_data$d_spacing  # Dripper spacing (m)
   d_rate <- json_data$d_rate        # Dripper flowrate (l/h)
-  w_length <- json_data$w_length    # Wetted length (m)
+  w_length <- json_data$w_length    # Total length of the drip lines (m)
   n_emitter <- w_length / d_spacing
   Flow_rate <- n_emitter * d_rate / 1000  # System flowrate (m³/h)
   
@@ -153,7 +158,7 @@ if (irr_method == "sprinkler") {
   d_depth <- json_data$d_depth      # Depth of drippers (m)
   d_spacing <- json_data$d_spacing  # Dripper spacing (m)
   d_rate <- json_data$d_rate        # Dripper flowrate (l/h)
-  w_length <- json_data$w_length    # Wetted length (m)
+  w_length <- json_data$w_length    # Total length of the drip lines (m)
   n_emitter <- w_length / d_spacing
   Flow_rate <- n_emitter * d_rate / 1000  # System flowrate (m³/h)
   

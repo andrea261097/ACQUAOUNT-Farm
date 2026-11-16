@@ -14,15 +14,21 @@ Before running the model for the first time, make sure that:
 
 The model is designed to be run sequentially; outputs from previous runs may be reused to improve calibration and consistency over time.
 
+## Software
+
+R (>= 4.0) with the packages loaded at the top of `Irrigation_model_for_paper/ACQUAOUNT_farm.R`: tictoc, readxl, units, lubridate, dplyr, randomForest, outliers, soilDB, aqp, ranger, parallel, jsonlite. Run the script with the working directory set to the `Irrigation_model_for_paper` folder.
+
 ## Configuration file (mandatory)
 
 JSON configuration file (`config.input.json`). This file contains all farm-specific parameters provided by the user, including crop type, growing season dates, planting geometry, soil texture and hydraulic properties, climate zone, geographic location, irrigation method, irrigation system characteristics, and sensor layout.
+
+Units of the irrigation-system parameters: `d_rate` (drip) and `s_rate` (sprinkler) are flow rates in **L h⁻¹ per emitter / per nozzle**; `d_spacing` and `d_depth` in m; `w_length` is the **total length of the drip lines** in m (the number of emitters is `w_length / d_spacing`); `n_emitter` (sprinkler) is the number of nozzles; `Area_crop` in m²; soil texture, organic matter and soil-water thresholds in %; `Ks` in cm h⁻¹; `Pb` in g cm⁻³.
 
 All parameters must be filled before the first run. If user-defined soil hydraulic thresholds (saturation, field capacity, wilting point) are provided, the model will use them directly; otherwise, internally derived values may be used depending on the setup.
 
 ## Crop parameters
 
-Crop-specific information (crop coefficients, phenological stages, rooting depth, and irrigation-related parameters) is stored in the crop table (`crop_data/crop_table_REVIEWED.csv`). The crop name defined in the JSON configuration file must exactly match one of the crop names in this table.
+Crop-specific information (crop coefficients, phenological stages, rooting depth, and irrigation-related parameters) is stored in the crop table (`Input_data/crop_data/crop_table_REVIEWED.csv`). The crop name defined in the JSON configuration file must exactly match one of the crop names in this table.
 
 ## Climate and sensor data
 
