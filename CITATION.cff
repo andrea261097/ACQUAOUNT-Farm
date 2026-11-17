@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "ACQUAOUNT-Farm irrigation model"
+type: software
+version: "1.0.0"
+license: MIT
+repository-code: "https://github.com/andrea261097/ACQUAOUNT-farm"
+authors:
+  - family-names: "Borgo"
+    given-names: "Andrea"
+# date-released: "YYYY-MM-DD"   # add on the day of the release
+# doi: "10.5281/zenodo.XXXXXXX" # add after Zenodo has issued the DOI

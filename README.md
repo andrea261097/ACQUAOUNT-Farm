@@ -73,3 +73,7 @@ From the second run onward, the model can exploit information saved from previou
 
 
 
+
+## License and citation
+
+The code is released under the MIT License (see `LICENSE`). Citation metadata are in `CITATION.cff`. The exact versions of R and of the packages used are listed in `SOFTWARE_VERSIONS.txt` (generated with `scripts/record_versions.R`).
