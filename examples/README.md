@@ -15,8 +15,9 @@ Each folder contains
   maximum and minimum soil moisture of the sensor);
 - `reference_output/`: the files produced by the model for this window.
 
-The crop table (`Irrigation_model_for_paper/Input_data/crop_data/crop_table_REVIEWED.csv`) is shared with the main model.
-The reference outputs are numerically identical to the first run of the simulations reported in the paper.
+The crop table (`Irrigation_model/Input_data/crop_data/crop_table.csv`) is shared with the main model.
+The configuration files have `"kc_dynamic": false` (fixed kc, as in the paper; see the main README).
+The reference outputs were produced with the repository model, this crop table and this configuration.
 
 ## Run
 

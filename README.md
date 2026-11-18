@@ -6,7 +6,7 @@ The repository is organized into input, configuration, and output folders. Input
 
 The repository contains:
 
-* `Irrigation_model_for_paper/`: the irrigation model (script, functions, crop table).
+* `Irrigation_model/`: the irrigation model (script, functions, crop table).
 * `examples/`: two complete, runnable examples with the parameters used in the paper (NR: potato; AM: citrus), including input data and reference outputs. See `examples/README.md`.
 * `wot/`: template Thing Descriptions, an adapter and a local mock server illustrating how sensor and weather-station data are normalised through the W3C Web of Things layer of the platform. See `wot/README.md`.
 
@@ -24,7 +24,7 @@ The model is designed to be run sequentially; outputs from previous runs may be 
 
 The pedotransfer step queries the ROSETTA web service through the `soilDB` package, so an internet connection is required when the model is run.
 
-R (>= 4.0) with the packages loaded at the top of `Irrigation_model_for_paper/ACQUAOUNT_farm.R`: tictoc, readxl, units, lubridate, dplyr, randomForest, outliers, soilDB, aqp, ranger, parallel, jsonlite. Run the script with the working directory set to the `Irrigation_model_for_paper` folder.
+R (>= 4.0) with the packages loaded at the top of `Irrigation_model/ACQUAOUNT_farm.R`: tictoc, readxl, units, lubridate, dplyr, randomForest, outliers, soilDB, aqp, ranger, parallel, jsonlite. Run the script with the working directory set to the `Irrigation_model` folder.
 
 ## Configuration file (mandatory)
 
@@ -36,7 +36,16 @@ All parameters must be filled before the first run. If user-defined soil hydraul
 
 ## Crop parameters
 
-Crop-specific information (crop coefficients, phenological stages, rooting depth, and irrigation-related parameters) is stored in the crop table (`Input_data/crop_data/crop_table_REVIEWED.csv`). The crop name defined in the JSON configuration file must exactly match one of the crop names in this table.
+Crop-specific information (crop coefficients, phenological stages, rooting depth, and irrigation-related parameters) is stored in the crop table (`Input_data/crop_data/crop_table.csv`). The crop name defined in the JSON configuration file must exactly match one of the crop names in this table.
+
+## Dynamic correction of the crop coefficient (`kc_dynamic`)
+
+The model includes a dynamic correction of the crop coefficient (kc), based on the soil-moisture response after irrigation. It is active in the operational platform but it was **not** used, and has not been evaluated, in any simulation of the paper, where kc is fixed. The optional field `"kc_dynamic"` of `config.input.json` controls it:
+
+* `"kc_dynamic": true`, or field absent (default): the correction is applied, as in the operational platform;
+* `"kc_dynamic": false`: kc is fixed (`kc_correction = 1`), as in the paper.
+
+The configuration files in `data/` and `examples/` have `"kc_dynamic": false`, so that they reproduce the configuration of the paper. The configuration file in `Irrigation_model/` has `"kc_dynamic": true` (the correction is applied, as in the operational platform; the same applies when the field is absent).
 
 ## Climate and sensor data
 
@@ -76,4 +85,4 @@ From the second run onward, the model can exploit information saved from previou
 
 ## License and citation
 
-The code is released under the MIT License (see `LICENSE`). Citation metadata are in `CITATION.cff`. The exact versions of R and of the packages used are listed in `SOFTWARE_VERSIONS.txt` (generated with `scripts/record_versions.R`).
+The code is released under the MIT License (see `LICENSE`). Citation metadata are in `CITATION.cff`. The exact versions of R and of the packages used are listed in `SOFTWARE_VERSIONS.txt`.

@@ -1,0 +1,15 @@
+R version 4.5.1 (2025-06-13 ucrt)
+Platform: x86_64-w64-mingw32
+Date: 2026-11-18
+
+aqp 2.2
+dplyr 1.1.4
+jsonlite 2.0.0
+lubridate 1.9.4
+outliers 0.15
+randomForest 4.7.1.2
+ranger 0.17.0
+readxl 1.4.5
+soilDB 2.8.11
+tictoc 1.2.1
+units 0.8.7

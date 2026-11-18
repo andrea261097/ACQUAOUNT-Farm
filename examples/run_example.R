@@ -14,7 +14,7 @@ args <- commandArgs(trailingOnly = TRUE)
 example <- if (length(args) >= 1) args[1] else "NR_potato"
 
 root      <- normalizePath(getwd())
-model_dir <- file.path(root, "Irrigation_model_for_paper")
+model_dir <- file.path(root, "Irrigation_model")
 ex_dir    <- file.path(root, "examples", example)
 if (!dir.exists(model_dir) || !dir.exists(ex_dir)) {
   stop("Run this script from the repository root and use an existing example name ",
@@ -26,7 +26,7 @@ work <- file.path(tempdir(), "ACQUAOUNT_farm_example")
 dir.create(work, recursive = TRUE)
 file.copy(file.path(model_dir, c("ACQUAOUNT_farm.R", "Functions")), work, recursive = TRUE)
 dir.create(file.path(work, "Input_data", "crop_data"), recursive = TRUE)
-file.copy(file.path(model_dir, "Input_data", "crop_data", "crop_table_REVIEWED.csv"),
+file.copy(file.path(model_dir, "Input_data", "crop_data", "crop_table.csv"),
           file.path(work, "Input_data", "crop_data"))
 
 # 2. example inputs (configuration, climate, soil moisture, irrigation, model state)

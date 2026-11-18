@@ -6,6 +6,7 @@
   "line_spacing": 0.8,
   "Area_crop": 1000,
   "kc_correction_filepath": "crop_data/kc_correction.csv",
+  "kc_dynamic": false,
   "P_sand": 75.5,
   "P_clay": 11.2,
   "P_silt": 13.3,

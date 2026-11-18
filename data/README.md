@@ -2,7 +2,8 @@
 
 Hourly input time series used to run the model on the four farms of the paper, plus the
 `config.input.json` of every farm and season. Files are copies of the simulation inputs, **unmodified**
-(byte-identical to the originals).
+(byte-identical to the originals), except for the configuration files, which have one added field,
+`"kc_dynamic": false` (fixed kc, as in the paper; see the main README).
 
 | Folder | Crop | Hourly file(s) | Coverage of the file(s) | Season in config (2024 / 2025) |
 |---|---|---|---|---|
@@ -13,7 +14,7 @@ Hourly input time series used to run the model on the four farms of the paper, p
 
 For AM and JD the 2024 and 2025 simulations use the same file (the simulation folder keeps two
 identical copies, `*_SM1.csv` and `*_SM1_2025.csv`; only one is stored here).
-The config of each season is `config.input_<FARM>_<YEAR>.json`: copy it to `Irrigation_model_for_paper/config.input.json` to run that season.
+The config of each season is `config.input_<FARM>_<YEAR>.json`: copy it to `Irrigation_model/config.input.json` to run that season.
 
 ## Columns of the hourly files
 
@@ -21,7 +22,7 @@ The config of each season is `config.input_<FARM>_<YEAR>.json`: copy it to `Irri
 `irr_given_vol` (irrigation volume given in the hour, from the plot water meter),
 `moisture_sensor_raw15cm`, `moisture_sensor_raw30cm`, `moisture_sensor_raw45cm` (volumetric water content, %),
 `precipitation` (mm).
-Units follow `Irrigation_model_for_paper/Input_output_variables_description.docx`.
+Units follow `Irrigation_model/Input_output_variables_description.docx`.
 The model reads these series in windows of 168 h of past data plus 168 h of forecast, one run per irrigation event.
 
 ## Known points to be aware of
